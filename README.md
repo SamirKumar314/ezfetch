@@ -4,7 +4,7 @@ It is written mainly in C#, with a focus on simplicity and ease of use. Currentl
 
 ---
 ## Screenshot
-<img src="Assets/screenshot01.png" alt="Ezfetch screenshot" width="800"/>
+<img src="Assets/screenshot02.png" alt="Ezfetch screenshot" width="800"/>
 
 ---
 ## Installation
