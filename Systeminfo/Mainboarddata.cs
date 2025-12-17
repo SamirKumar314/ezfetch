@@ -10,12 +10,19 @@ namespace ezfetch.Systeminfo
         public static string Getmainboarddata()
         {
             StringBuilder str = new StringBuilder(string.Empty);
-            ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT Product, Manufacturer FROM Win32_Baseboard");
-            foreach (ManagementObject obj in mos.Get())
+            try
             {
-                string baseboard = obj["Product"]?.ToString() ?? "Unknown";
-                string boardmfr = obj["Manufacturer"]?.ToString() ?? "Unknown";
-                str.AppendLine($"Mainboard: {baseboard}");
+                using ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT Product, Manufacturer FROM Win32_Baseboard");
+                foreach (ManagementObject obj in mos.Get())
+                {
+                    string baseboard = obj["Product"]?.ToString() ?? "Unknown";
+                    string boardmfr = obj["Manufacturer"]?.ToString() ?? "Unknown";
+                    str.AppendLine($"Mainboard: {baseboard}");
+                }
+            }
+            catch(ManagementException)
+            {
+                str.AppendLine("Mainboard: Unknown");
             }
             return str.ToString();
         }

@@ -12,24 +12,33 @@ namespace ezfetch.Systeminfo
         public static string Getnwdata()
         {
             StringBuilder str6 = new StringBuilder(string.Empty);
-            ManagementObjectSearcher mos6 = new ManagementObjectSearcher(
-                "SELECT Name, MacAddress, NetConnectionID FROM Win32_NetworkAdapter WHERE NetConnectionID LIKE '%Wi-Fi%' OR Name LIKE '%Wireless%'"
-                );
-
-            foreach (ManagementObject obj in mos6.Get())
+            try
             {
-                string name1 = (obj["Name"]?.ToString() ?? "Unknown").Trim();
-                string macadd = (obj["MacAddress"]?.ToString() ?? "Unknown").Trim();
-                string netid = (obj["NetConnectionID"]?.ToString() ?? "Unknown").Trim();
+                using (ManagementObjectSearcher mos6 = new ManagementObjectSearcher(
+                    "SELECT Name, MacAddress, NetConnectionID FROM Win32_NetworkAdapter WHERE NetConnectionID LIKE '%Wi-Fi%' OR Name LIKE '%Wireless%'"
+                    ))
+                {
+                    foreach (ManagementObject obj in mos6.Get())
+                    {
+                        string name1 = (obj["Name"]?.ToString() ?? "Unknown").Trim();
+                        string macadd = (obj["MacAddress"]?.ToString() ?? "Unknown").Trim();
+                        string netid = (obj["NetConnectionID"]?.ToString() ?? "Unknown").Trim();
 
-                //ulong speed = (ulong)(obj["Speed"] ?? 0UL);
-                //double mbps = speed / 1_000_000.0;
+                        //ulong speed = (ulong)(obj["Speed"] ?? 0UL);
+                        //double mbps = speed / 1_000_000.0;
 
-                str6.AppendLine($"Wifi Adapter: {name1} ({netid})");
-                //str6.AppendLine($"Wifi ID: {netid}");
-                str6.AppendLine($"MAC-Address: {macadd}");
-                //str6.AppendLine($"Link Speed: {mbps:F0} mbps");
-                break;
+                        str6.AppendLine($"Wifi Adapter: {name1} ({netid})");
+                        //str6.AppendLine($"Wifi ID: {netid}");
+                        str6.AppendLine($"MAC-Address: {macadd}");
+                        //str6.AppendLine($"Link Speed: {mbps:F0} mbps");
+                        break;
+                    }
+                }
+            }
+            catch(ManagementException)
+            {
+                str6.AppendLine("Wifi Adapter: Unknown");
+                str6.AppendLine("MAC-Address: Unknown");
             }
 
             //get IP address...

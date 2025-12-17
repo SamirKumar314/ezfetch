@@ -10,8 +10,8 @@ namespace ezfetch.Systeminfo
         {
             StringBuilder str8 = new StringBuilder(string.Empty);
 
-            string host = Environment.MachineName;
-            string user = Environment.UserName;
+            string host = Environment.MachineName ?? "Desktop";
+            string user = Environment.UserName ?? "User";
             string hheader = $"{host}@{user}";
             str8.AppendLine(hheader + ":");
             str8.AppendLine(new string('-', hheader.Length) + ":");
