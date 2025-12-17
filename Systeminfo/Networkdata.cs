@@ -33,12 +33,19 @@ namespace ezfetch.Systeminfo
             }
 
             //get IP address...
-            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            try
             {
-                socket.Connect("8.8.8.8", 65530);
-                IPEndPoint endpoint = socket.LocalEndPoint as IPEndPoint;
-                string ip = endpoint?.Address.ToString() ?? "Unknown";
-                str6.AppendLine($"IP-Address: {ip}");
+                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+                {
+                    socket.Connect("8.8.8.8", 65530);
+                    IPEndPoint endpoint = socket.LocalEndPoint as IPEndPoint;
+                    string ip = endpoint?.Address.ToString() ?? "Unknown";
+                    str6.AppendLine($"IP-Address: {ip}");
+                }
+            }
+            catch
+            {
+                str6.AppendLine($"IP-Address: Not Connected");
             }
             return str6.ToString();
         }
